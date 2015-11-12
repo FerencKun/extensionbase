@@ -8,5 +8,5 @@ build/
 .idea/
 node_modules
 bower_components
-build
+dist
 .idea
