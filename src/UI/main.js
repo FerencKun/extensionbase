@@ -1,0 +1,1 @@
+console.log("UI is ready to work");

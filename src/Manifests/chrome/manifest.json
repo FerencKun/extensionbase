@@ -1,0 +1,61 @@
+{
+  "manifest_version": 2,
+  "name": "Browse Wisely",
+  "description": "",
+  "version": "1.0.0",
+  "permissions": [
+    "tabs",
+    "cookies",
+    "storage",
+    "activeTab",
+    "webRequest",
+    "webRequestBlocking",
+    "clipboardWrite",
+    "<all_urls>"
+  ],
+  "optional_permissions": [
+    "notifications"
+  ],
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+B",
+        "windows": "Ctrl+B",
+        "mac": "MacCtrl+B"
+      }
+    }
+  },
+  /*"icons": {
+    "128": "Assets/Icons/Chrome/chrome-128-blue.png",
+    "16": "Assets/Icons/Chrome/chrome-16-blue.png",
+    "48": "Assets/Icons/Chrome/chrome-48-blue.png"
+  },*/
+  "browser_action": {
+    /*"default_icon": "Assets/Icons/Chrome/chrome-38-grey.png",*/
+    "default_popup": "UI/Popups/index.html"
+  },
+  "background": {
+    "scripts": [
+      "BackgroundScripts/Browsers/chrome.js",
+      "BackgroundScripts/test.js"
+    ],
+    "persistent": true
+  },
+  "web_accessible_resources": [
+    "UI/Panels/index.html"
+  ],
+  "content_security_policy": "script-src 'self' https://fonts.googleapis.com/; object-src 'self'",
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "ContentScripts/test.js"
+      ],
+      "css" : ["Assets/Styles/panel.css"],
+      "all_frames": true,
+      "run_at": "document_end"
+    }
+  ]
+}

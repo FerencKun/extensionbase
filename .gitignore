@@ -1,0 +1,12 @@
+.git
+.DS_Store
+node_modules/
+bower_components/
+build/
+.metadata
+.tmp
+.idea/
+node_modules
+bower_components
+build
+.idea
