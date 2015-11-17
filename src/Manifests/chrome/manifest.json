@@ -25,13 +25,12 @@
       }
     }
   },
-  /*"icons": {
-    "128": "Assets/Icons/Chrome/chrome-128-blue.png",
-    "16": "Assets/Icons/Chrome/chrome-16-blue.png",
-    "48": "Assets/Icons/Chrome/chrome-48-blue.png"
-  },*/
+  "icons": {
+    "128": "Assets/Icons/icon.png",
+    "16": "Assets/Icons/icon.png",
+    "48": "Assets/Icons/icon.png"
+  },
   "browser_action": {
-    /*"default_icon": "Assets/Icons/Chrome/chrome-38-grey.png",*/
     "default_popup": "UI/Popups/index.html"
   },
   "background": {
