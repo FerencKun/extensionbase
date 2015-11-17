@@ -6,10 +6,12 @@ module BackgroundScripts.Browsers {
     let timers: any = require("sdk/timers");
     let panels: any = require("sdk/panel");
     let pageMod: any = require('sdk/page-mod');
+    let buttons: any = require('sdk/ui/button/action');
 
     class Firefox implements IBrowser {
 
         private panel: any;
+        private button: any;
         private eventListeners: {(event: Common.Event): void}[] = [];
 
         constructor(){
@@ -25,6 +27,17 @@ module BackgroundScripts.Browsers {
                 }
             });
 
+            this.button = buttons.ActionButton({
+                id: 'extensionbase-2',
+                label: 'ExtensionBase',
+                icon: {
+                    '16': './Assets/Icons/icon.png',
+                    '32': './Assets/Icons/icon.png',
+                    '64': './Assets/Icons/icon.png'
+                },
+                onClick: this.handleClick
+            });
+
             this.panel.port.on('message', (event: any): void => {
                 for (let i: number = 0; i < this.eventListeners.length; i++) {
                     this.eventListeners[i](event.payload);
@@ -37,6 +50,19 @@ module BackgroundScripts.Browsers {
                 contentScriptWhen: 'ready'
             });
         }
+
+        private handleClick: () => void =
+            (): void => {
+
+                if (this.panel.isShowing) {
+                    this.panel.hide();
+                } else {
+                    this.panel.hide();
+                    this.panel.show({
+                        position: this.button
+                    });
+                }
+            };
 
         public getAllTabs(response: (tabs: any) => void): void {
             response(tabs);

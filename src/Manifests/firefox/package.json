@@ -1,14 +1,14 @@
 {
-  "name": "browsewisely",
-  "author": "Kun Ferenc",
+  "name": "extensionbase",
+  "author": "Ferenc Kun",
   "version": "1.0.0",
-  "fullName": "Browse Wisely",
+  "fullName": "Extension Base",
   "homepage": "",
-  "icon": "Assets/Icons/Firefox/firefox-48-blue.png",
-  "id": "browsewisely@kf",
-  "description": "Browse wisely",
+  "icon": "Assets/Icons/icon.png",
+  "id": "extensionbase@kf",
+  "description": "Extension Base",
   "dependencies": [],
-  "title": "Browse Wisely",
+  "title": "Extension Base",
   "permissions": {
     "private-browsing": true
   },

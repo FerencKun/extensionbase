@@ -1,8 +1,7 @@
 {
-  "name": "browsewisely",
+  "name": "extensionbase",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "dependencies": {
     "del": "^2.0.2",
     "gulp": "^3.9.0",
@@ -17,6 +16,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Ferenc Kun",
   "license": "ISC"
 }
