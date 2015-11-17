@@ -1,8 +1,8 @@
-///<reference path="../../Common/Browsers/IBrowser.ts"/>
+///<reference path="./IBrowser.ts"/>
 
-module UI.Panels.Browsers {
+module UI.Popups.Browsers {
 
-    class Chrome implements UI.Browsers.IBrowser {
+    class Chrome implements IBrowser {
 
         private eventListeners: {(event: Common.Event): void}[] = [];
 
@@ -16,9 +16,7 @@ module UI.Panels.Browsers {
         }
 
         public trigger(event: Common.Event): void {
-            let packedPayload: any =
-            { type: 'message', payload: event };
-            chrome.runtime.sendMessage(packedPayload);
+            chrome.runtime.sendMessage({ type: "message", payload: event });
         }
 
         public eventReceived(callback: (p1: Common.Event) => void): void {
@@ -26,5 +24,5 @@ module UI.Panels.Browsers {
         }
     }
 
-    export let browser: UI.Browsers.IBrowser = new Chrome();
+    export let browser: IBrowser = new Chrome();
 }

@@ -8,7 +8,7 @@ module ContentScripts.Browsers {
 
         constructor(){
             chrome.runtime.onMessage.addListener(
-                (request: any) => {
+                (request: any, sender: any, sendResponse: any) => {
                     this.eventListeners.forEach((listener: (p1: Common.Event) => void) => {
                         listener(request.payload);
                     });
@@ -17,7 +17,7 @@ module ContentScripts.Browsers {
 
         public trigger(event: Common.Event): void {
             chrome.runtime.sendMessage(
-                event,
+                { type: "message", payload: event },
                 (response: chrome.runtime.ExtensionMessageEvent): void => {
                 });
         }

@@ -4,17 +4,19 @@ module BackgroundScripts.Browsers {
 
     let tabs: any = require("sdk/tabs");
     let timers: any = require("sdk/timers");
-    let panels: any = require("sdk/panels");
+    let panels: any = require("sdk/panel");
+    let pageMod: any = require('sdk/page-mod');
 
     class Firefox implements IBrowser {
 
         private panel: any;
+        private eventListeners: {(event: Common.Event): void}[] = [];
 
         constructor(){
             this.panel = panels.Panel({
                 width: 300,
                 height: 455,
-                contentURL: './UI/index.html',
+                contentURL: './UI/Popups/index.html',
                 onHide: (): void => {
                     // this.panel.port.emit('hide');
                 },
@@ -22,29 +24,50 @@ module BackgroundScripts.Browsers {
                     // this.panel.port.emit('show', tabs.activeTab.url);
                 }
             });
+
+            this.panel.port.on('message', (event: any): void => {
+                for (let i: number = 0; i < this.eventListeners.length; i++) {
+                    this.eventListeners[i](event.payload);
+                }
+            });
+
+            pageMod.PageMod({
+                include: '*',
+                contentScriptFile: './ContentScripts/contentScript.js',
+                contentScriptWhen: 'ready'
+            });
         }
 
         public getAllTabs(response: (tabs: any) => void): void {
             response(tabs);
         }
 
-        public setTimeout(expression: () => void, msec: number): number {
-            return timers.setTimeout(expression, msec);
-        }
-
         public eventReceived: (callback: (event: Common.Event) => void) => void =
             (callback: (event: Common.Event) => void): void => {
-                this.panel.port.on('message', (event: any): void => {
-                    callback(event);
-                });
+                this.eventListeners.push(callback);
             };
 
         public trigger: (event: Common.Event) => void =
             (event: Common.Event): void => {
-                this.panel.port.emit('message', event);
+                let packedPayload: any = {type: 'message', payload: event};
+                this.panel.port.emit(packedPayload);
             };
 
+        public setTimeout(expression: () => void, msec: number): number {
+            return timers.setTimeout(expression, msec);
+        }
 
+        public clearTimeout(setTimeoutId: number): void {
+            timers.clearTimeout(setTimeoutId);
+        }
+
+        public setInterval(expression: () => void, msec: number): number {
+            return timers.setInterval(expression, msec);
+        }
+
+        public clearInterval(setIntervalId: number): void {
+            timers.clearInterval(setIntervalId);
+        }
     }
 
     export let browser: IBrowser = new Firefox();

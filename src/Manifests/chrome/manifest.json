@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Browse Wisely",
+  "name": "Extension Base",
   "description": "",
   "version": "1.0.0",
   "permissions": [
@@ -36,7 +36,9 @@
   },
   "background": {
     "scripts": [
+      "Common/events.js",
       "BackgroundScripts/Browsers/chrome.js",
+      "BackgroundScripts/baseBackgroundScript.js",
       "BackgroundScripts/test.js"
     ],
     "persistent": true
@@ -51,10 +53,10 @@
         "<all_urls>"
       ],
       "js": [
-        "ContentScripts/test.js"
+        "ContentScripts/contentScript.js"
       ],
       "css" : ["Assets/Styles/panel.css"],
-      "all_frames": true,
+      "all_frames": false,
       "run_at": "document_end"
     }
   ]

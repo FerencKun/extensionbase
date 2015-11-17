@@ -1,8 +1,7 @@
-///<reference path="Browsers/IBrowser.ts"/>
+///<reference path="./Browsers/IBrowser.ts"/>
 /// <reference path="../../Common/events.ts"/>
-/* tslint:disable:no-any */
 
-module UI.Base {
+module UI.Popups {
     'use strict';
 
     class EventListener {

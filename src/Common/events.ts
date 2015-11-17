@@ -10,6 +10,8 @@ module Common {
     }
 
     export class EventTypes {
-        public static test: string = 'bw_test';
+        public static test: string = 'bw_test_from_bg';
+        public static testContent: string = 'bw_test_from_content';
+        public static testUI: string = 'bw_test_from_ui';
     }
 }

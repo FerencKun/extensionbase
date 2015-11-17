@@ -5,7 +5,7 @@ module BackgroundScripts {
 
     export class Monitor extends BaseBackgroundScript{
 
-        constructor(private browser: Browsers.IBrowser) {
+        constructor(browser: Browsers.IBrowser) {
             super(browser);
         }
 
@@ -14,6 +14,24 @@ module BackgroundScripts {
                 for (var i = 0; i < tabs.length; i++) {
                     console.log(tabs[i].url);
                 }
+            });
+
+            this.browser.setTimeout(() => {
+                this.emit(Common.EventTypes.test, { message: "Message from BackgroundScript"},
+                    (response: string): void => {
+                        console.log("!!!Response after getting BG message:");
+                        console.log(response);
+                    });
+            }, 6000);
+
+            this.on(Common.EventTypes.testContent, (response: any) => {
+                console.log("!!!Event from ContentScript received:");
+                console.log(response);
+            });
+
+            this.on(Common.EventTypes.testUI, (response: any) => {
+                console.log("!!!Event from UI received:");
+                console.log(response);
             });
         }
     }

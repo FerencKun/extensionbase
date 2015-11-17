@@ -1,6 +1,9 @@
-///<reference path="IBrowser.ts"/>
+///<reference path="./IBrowser.ts"/>
 
-module ContentScripts.Browsers {
+module UI.Panels.Browsers {
+
+    // there is no require here - causing hidden error on runtime - ff fails but no info
+    // let self: any = require("sdk/self");
 
     class Firefox implements IBrowser {
 
@@ -27,10 +30,8 @@ module ContentScripts.Browsers {
 
         private getPort(): any {
             if (self.port) {
-                console.log("self.port is available");
                 return self.port;
             } else if (window.addon) {
-                console.log("self.port is available");
                 return addon.port;
             } else {
                 return {

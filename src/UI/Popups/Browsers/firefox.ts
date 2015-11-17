@@ -1,6 +1,6 @@
 ///<reference path="./IBrowser.ts"/>
 
-module UI.Browsers {
+module UI.Popups.Browsers {
 
     // there is no require here - causing hidden error on runtime - ff fails but no info
     // let self: any = require("sdk/self");
@@ -14,13 +14,14 @@ module UI.Browsers {
             this.port = this.getPort();
             this.port.on('message', (event: any) : any => {
                 for (let i: number = 0; i < this.eventListeners.length; i++) {
-                    this.eventListeners[i](event.data);
+                    this.eventListeners[i](event.payload);
                 }
             });
         }
 
         public trigger(event: Common.Event): void {
-            this.port.emit('message', event);
+            let packedPayload: any = {type: 'message', payload: event};
+            this.port.emit(packedPayload);
         }
 
         public eventReceived(callback: (p1: Common.Event) => void): void {

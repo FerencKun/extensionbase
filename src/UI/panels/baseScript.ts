@@ -1,7 +1,7 @@
-///<reference path="Browsers/IBrowser.ts"/>
-///<reference path="../Common/events.ts"/>
+///<reference path="./Browsers/IBrowser.ts"/>
+/// <reference path="../../Common/events.ts"/>
 
-module BackgroundScripts {
+module UI.Panels {
     'use strict';
 
     class EventListener {
@@ -15,21 +15,15 @@ module BackgroundScripts {
     }
 
     interface IResponse {
-        (params: any): void;
+        (params: Object): void;
     }
 
-    export class BaseBackgroundScript {
+    export class BaseScript {
 
-        public browser: Browsers.IBrowser;
+        private listeners: EventListener[] = [];
+        private pendingResponses: { [key: string]: (params: any) => void } = {};
 
-        private listeners: EventListener[];
-        private pendingResponses: { [key: string]: (params: any) => void };
-
-        constructor(browser: Browsers.IBrowser) {
-            this.browser = browser;
-            this.listeners = [];
-            this.pendingResponses = {};
-
+        constructor(public browser: Browsers.IBrowser) {
             this.browser.eventReceived(this.handleEvent);
         }
 
@@ -38,6 +32,7 @@ module BackgroundScripts {
                 this.pendingResponses[event.replyTo](event.params);
                 delete this.pendingResponses[event.replyTo];
             } else {
+
                 for (let i: number = 0; i < this.listeners.length; i++) {
                     let eventListener: EventListener = this.listeners[i];
                     if (eventListener.eventType === event.type && !event.replyTo) {
@@ -55,22 +50,22 @@ module BackgroundScripts {
             }
         };
 
-        public on(eventType: string, callback: (eventParams: any, response: (response: any) => void) => void): void {
+        public on(eventType: string, callback: any): void {
             this.listeners.push(new EventListener(eventType, callback));
         }
 
-        public emit(eventType: string, params: any, onResponse: (params: any) => void): void {
+        public emit(eventType: string, eventParams: any, response: any): void {
             let event: Common.Event = new Common.Event();
             event.id = this.createGuid();
-            event.params = params;
+            event.params = eventParams;
             event.type = eventType;
 
-            this.pendingResponses[event.id] = onResponse;
+            this.pendingResponses[event.id] = response;
 
             this.browser.trigger(event);
         }
 
-        public createGuid(): string {
+        private createGuid(): string {
             return Math.floor(Math.random() * 100000000).toString();
         }
     }

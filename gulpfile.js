@@ -37,7 +37,6 @@ gulp.task('compile:ts', ['clean'], function(){
         default:
             break;
     }
-    src.push('!src/ContentScripts/**/*');
 
     return gulp.src(src)
         .pipe(ts({
@@ -51,6 +50,7 @@ gulp.task('copy', ['compile:ts'], function(){
     var destination = 'dist/' + options.browser;
 
     var bowerLibFiles;
+    var contentScript;
     var otherFiles;
     var manifestFiles;
     var jsFiles;
@@ -69,11 +69,20 @@ gulp.task('copy', ['compile:ts'], function(){
         ])
             .pipe(gulp.dest(destination));
 
-        jsFiles = gulp.src('dist/js/**/*.js')
+        var chromeFiles = gulp.src(['dist/js/**/*.js', '!dist/js/ContentScripts/**/*.js'])
             .pipe(gulp.dest(destination));
 
         manifestFiles = gulp.src(['src/Manifests/chrome/manifest.json'])
             .pipe(gulp.dest(destination));
+
+        contentScript = gulp.src([
+            'dist/js/Common/**/*.js',
+            'dist/js/ContentScripts/Browsers/**/*.js',
+            'dist/js/ContentScripts/**/*.js'])
+            .pipe(concat('contentScript.js'))
+            .pipe(gulp.dest(destination + '/ContentScripts'));
+
+        jsFiles = merge(chromeFiles, contentScript);
 
         // Firefox
     } else if (options.browser === 'firefox') {
@@ -89,7 +98,7 @@ gulp.task('copy', ['compile:ts'], function(){
         ])
             .pipe(gulp.dest(destination + '/data'));
 
-        var firefoxScripts = gulp.src(['dist/js/**/*.js', '!dist/js/BackgroundScripts/**/*.js'])
+        var firefoxScripts = gulp.src(['dist/js/**/*.js', '!dist/js/BackgroundScripts/**/*.js', '!dist/js/ContentScripts/**/*.js'])
             .pipe(gulp.dest(destination + '/data'));
 
         var firefoxMain = gulp.src([
@@ -99,13 +108,20 @@ gulp.task('copy', ['compile:ts'], function(){
             .pipe(concat('firefoxMain.js'))
             .pipe(gulp.dest(destination + '/Main'));
 
-        jsFiles = merge(firefoxScripts, firefoxMain);
+        contentScript = gulp.src([
+            'dist/js/Common/**/*.js',
+            'dist/js/ContentScripts/Browsers/**/*.js',
+            'dist/js/ContentScripts/**/*.js'])
+            .pipe(concat('contentScript.js'))
+            .pipe(gulp.dest(destination + '/data/ContentScripts'));
+
+        jsFiles = merge(firefoxScripts, firefoxMain, contentScript);
 
         manifestFiles = gulp.src(['src/Manifests/firefox/package.json'])
             .pipe(gulp.dest(destination));
     }
 
-    return merge(jsFiles, /*bowerLibFiles, */otherFiles, manifestFiles);
+    return merge(jsFiles, /*bowerLibFiles, */ otherFiles, manifestFiles);
 });
 
 // Replace params

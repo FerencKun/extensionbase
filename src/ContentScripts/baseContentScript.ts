@@ -19,7 +19,7 @@ module ContentScripts {
     }
 
     export class BaseContentScript {
-        public browser: ContentScripts.Browsers.IBrowser;
+        public browser: Browsers.IBrowser;
         private listeners: EventListener[];
         private pendingResponses: { [key: string]: (params: any) => void };
 
@@ -38,7 +38,7 @@ module ContentScripts {
             } else {
                 for (let i: number = 0; i < this.listeners.length; i++) {
                     let eventListener: EventListener = this.listeners[i];
-                    if (eventListener.eventType === event.type && !event.replyTo) {
+                    if (eventListener.eventType === event.type) {
                         let response: IResponse = (params: Object): void => {
                             let responseEvent: Common.Event = new Common.Event();
                             responseEvent.id = this.createGuid();
