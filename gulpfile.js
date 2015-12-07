@@ -39,9 +39,7 @@ gulp.task('compile:ts', ['clean'], function(){
     }
 
     return gulp.src(src)
-        .pipe(ts({
-            noLib: options.browser === 'firefox'
-        }, {}, ts.reporter.longReporter()))
+        .pipe(ts({}, {}, ts.reporter.longReporter()))
         .pipe(gulp.dest('dist/js'));
 });
 

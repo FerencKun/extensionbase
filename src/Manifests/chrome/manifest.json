@@ -42,10 +42,6 @@
     ],
     "persistent": true
   },
-  "web_accessible_resources": [
-    "UI/Panels/index.html"
-  ],
-  "content_security_policy": "script-src 'self' https://fonts.googleapis.com/; object-src 'self'",
   "content_scripts": [
     {
       "matches": [

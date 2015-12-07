@@ -19,7 +19,6 @@ module UI.Panels.Browsers {
         // because Panels are iframe-s in Chrome - window.top gets the iframe parent window
         // sending the message needs to come from the top window
         public trigger(event: Common.Event): void {
-            //chrome.runtime.sendMessage({ type: "message", payload: event });
             window.top.postMessage(event, '*');
         }
 

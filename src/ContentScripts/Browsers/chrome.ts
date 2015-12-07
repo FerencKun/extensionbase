@@ -13,12 +13,21 @@ module ContentScripts.Browsers {
                         listener(request.payload);
                     });
                 });
+
+            // propagates events from Panel to all other component
+            window.addEventListener(
+                'message',
+                (event: any): any => {
+                    event.data.fromIFrame = true;
+                    this.trigger(event.data);
+                },
+                false);
         }
 
         public trigger(event: Common.Event): void {
             chrome.runtime.sendMessage(
-                { type: "message", payload: event },
-                (response: chrome.runtime.ExtensionMessageEvent): void => {
+                    { type: "message", payload: event },
+                    (response: chrome.runtime.ExtensionMessageEvent): void => {
                 });
         }
 
